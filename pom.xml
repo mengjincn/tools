@@ -34,6 +34,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!--作为被依赖的jar包时，不可以使用该插件-->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
