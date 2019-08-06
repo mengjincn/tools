@@ -5,6 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
+
 @SpringBootApplication
 public class ToolsApplication {
 
@@ -27,6 +31,39 @@ public class ToolsApplication {
             // System.out.println(CountryEnum.getByOrdinal(2));
 
             System.out.println("just start");
+
+
+            BlockingQueue<String> synchronousBlockingQueue=new SynchronousQueue<>();
+
+            new Thread(()->{
+                try {
+                    System.out.println(Thread.currentThread().getName()+"\t put 1");
+                    synchronousBlockingQueue.put("1");
+
+                    System.out.println(Thread.currentThread().getName()+"\t put 2");
+                    synchronousBlockingQueue.put("2");
+
+                    System.out.println(Thread.currentThread().getName()+"\t put 3");
+                    synchronousBlockingQueue.put("3");
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }, "AAA").start();
+
+            new Thread(()->{
+                try {
+                    for (int i = 0; i < 3; i++) {
+                        TimeUnit.SECONDS.sleep(5);
+                        System.out.println(Thread.currentThread().getName()+"\t take "+ synchronousBlockingQueue.take());
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }, "BBB").start();
         };
     }
 
